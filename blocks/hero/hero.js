@@ -23,6 +23,20 @@ export default function decorate(block) {
     block.classList.add('removeunderline');
   }
 
+  // Check first row for a video link and replace with a <video> element
+  const mediaCell = block.querySelector(':scope div:first-child > div');
+  const videoLink = mediaCell?.querySelector('a[href]');
+  if (videoLink && /\.(mp4|webm|ogg)(\?.*)?$/i.test(videoLink.href)) {
+    const video = document.createElement('video');
+    video.src = videoLink.href;
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    mediaCell.replaceChildren(video);
+  }
+
   // Find the button container within the hero block
   const buttonContainer = block.querySelector('p.button-container');
 

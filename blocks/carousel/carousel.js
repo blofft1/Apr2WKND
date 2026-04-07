@@ -21,7 +21,7 @@ export default function decorate(block) {
   });
 
   if (carouselStartIndex === -1) {
-    carouselStartIndex = 4;
+    carouselStartIndex = 0;
   }
 
   [...block.children].forEach((row) => {

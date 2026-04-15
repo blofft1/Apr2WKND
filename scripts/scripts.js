@@ -9,8 +9,12 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  loadScript,
   fetchPlaceholders,
   getMetadata,
+  sampleRUM,
+  toCamelCase,
+  toClassName,
 } from './aem.js';
 import { picture, source, img } from './dom-helpers.js';
 
@@ -19,6 +23,38 @@ import {
   formatDate,
   PATH_PREFIX,
 } from './utils.js';
+
+const AUDIENCES = {
+  mobile: () => window.innerWidth < 600,
+  desktop: () => window.innerWidth >= 600,
+  // define your custom audiences here as needed
+};
+
+/**
+ * Gets all the metadata elements that are in the given scope.
+ * @param {String} scope The scope/prefix for the metadata
+ * @returns an object with the metadata values for the given scope
+ */
+export function getAllMetadata(scope) {
+  return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
+    .reduce((res, meta) => {
+      const id = toClassName(meta.name
+        ? meta.name.substring(scope.length + 1)
+        : meta.getAttribute('property').split(':')[1]);
+      res[id] = meta.getAttribute('content');
+      return res;
+    }, {});
+}
+
+const pluginContext = {
+  getAllMetadata,
+  getMetadata,
+  loadCSS,
+  loadScript,
+  sampleRUM,
+  toCamelCase,
+  toClassName,
+};
 
 /**
  * Moves all the attributes from a given elmenet to another given element.
@@ -279,6 +315,16 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   renderWBDataLayer();
+
+  // Experimentation plugin - eager phase
+  if (getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadEager: runEager } = await import('../plugins/experimentation/src/index.js');
+    await runEager(document, { audiences: AUDIENCES }, pluginContext);
+  }
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -314,6 +360,15 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  // Experimentation plugin - lazy phase (authoring overlay)
+  if (getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadLazy: runLazy } = await import('../plugins/experimentation/src/index.js');
+    await runLazy(document, { audiences: AUDIENCES }, pluginContext);
+  }
 }
 
 /**
@@ -336,5 +391,5 @@ async function loadPage() {
 (async function loadDa() {
   if (!new URL(window.location.href).searchParams.get('dapreview')) return loadPage();
   // eslint-disable-next-line import/no-unresolved
-  import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
+  return import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
 }());

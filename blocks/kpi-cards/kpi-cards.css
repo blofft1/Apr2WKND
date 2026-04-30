@@ -1,0 +1,73 @@
+.kpi-cards .kpi-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.kpi-cards .kpi-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kpi-cards .kpi-card-label {
+  font-size: 13px;
+  color: #6e6e6e;
+  font-weight: 500;
+}
+
+.kpi-cards .kpi-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kpi-cards .kpi-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.1;
+}
+
+.kpi-cards .kpi-spark {
+  width: 60px;
+  height: 24px;
+  color: #6e6e6e;
+}
+
+.kpi-cards .kpi-card-trend {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kpi-cards .kpi-card-trend.up {
+  color: #12805c;
+}
+
+.kpi-cards .kpi-card-trend.down {
+  color: #d83a00;
+}
+
+.kpi-cards .kpi-card-trend.neutral {
+  color: #6e6e6e;
+}
+
+.kpi-cards .kpi-trend-icon {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (width <= 600px) {
+  .kpi-cards .kpi-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

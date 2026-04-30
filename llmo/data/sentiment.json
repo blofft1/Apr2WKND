@@ -1,0 +1,16 @@
+{
+  "options": {
+    "title": "Sentiment Distribution",
+    "subtitle": "How AI models describe WKND Adventures to travelers",
+    "legends": ["Negative", "Neutral", "Positive"]
+  },
+  "data": {
+    "labels": ["Apr 5", "Apr 12", "Apr 19", "Apr 26"],
+    "stacks": [
+      [8, 30, 62],
+      [5, 28, 67],
+      [6, 25, 69],
+      [4, 22, 74]
+    ]
+  }
+}

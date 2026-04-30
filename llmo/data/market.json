@@ -1,0 +1,14 @@
+{
+  "options": {
+    "title": "Market Comparison",
+    "subtitle": "Brand visibility vs top adventure travel competitors. Aggregated unique weekly mentions and citations over 4 weeks",
+    "legends": ["Citations", "Mentions"]
+  },
+  "data": [
+    { "label": "⭐ WKND Adventures", "values": [73, 42] },
+    { "label": "Intrepid Travel", "values": [185, 96] },
+    { "label": "G Adventures", "values": [156, 78] },
+    { "label": "REI Adventures", "values": [134, 65] },
+    { "label": "Lonely Planet", "values": [245, 120] }
+  ]
+}

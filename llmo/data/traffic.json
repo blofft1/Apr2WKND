@@ -1,0 +1,14 @@
+{
+  "options": {
+    "title": "Traffic Trends",
+    "subtitle": "Agentic and referral traffic from AI-powered travel assistants",
+    "legends": ["Agentic Traffic", "Referral Traffic"]
+  },
+  "data": {
+    "labels": ["Apr 5", "Apr 12", "Apr 19", "Apr 26"],
+    "series": [
+      { "values": [145000, 162000, 178000, 195000] },
+      { "values": [3200, 3800, 4100, 4700] }
+    ]
+  }
+}

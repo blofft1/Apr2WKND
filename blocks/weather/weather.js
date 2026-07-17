@@ -34,9 +34,9 @@ export default async function decorate(block) {
     const { latitude, longitude, name, country } = geo.results[0];
 
     // 4) Fetch current weather for those coordinates (public, no key).
-    const wxRes = await fetch(
+        const wxRes = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}` +
-        `&current=temperature_2m,weather_code,wind_speed_10m`
+        `&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph`
     );
     const wx = await wxRes.json();
     const current = wx.current;
@@ -45,9 +45,9 @@ export default async function decorate(block) {
     // 5) Render the real data.
     card.innerHTML = `
       <div class="weather-place">${name}, ${country}</div>
-      <div class="weather-temp">${Math.round(current.temperature_2m)}°C</div>
+      <div class="weather-temp">${Math.round(current.temperature_2m)}°F</div>
       <div class="weather-desc">${description}</div>
-      <div class="weather-wind">Wind ${Math.round(current.wind_speed_10m)} km/h</div>
+      <div class="weather-wind">Wind ${Math.round(current.wind_speed_10m)} mph</div>
       <div class="weather-updated">Live · fetched ${new Date().toLocaleTimeString()}</div>
     `;
   } catch (err) {
